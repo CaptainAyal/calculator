@@ -11,8 +11,8 @@ const multiply = (a, b)=>{return a*b};
 const divide = (a, b)=>{return a/b};
 
 //create variables
-let num1=0;
-let num2=0;
+let num1;
+let num2;
 let operator;
 let display=0;
 
@@ -26,13 +26,23 @@ const operate = function(a, b){
 }
 
 //create function to populate display when number buttons are pressed
-//Concats button presses. Still need to wrtie to display div
 const write = (input) =>{
     display === 0 ? display = input
     :display = display.toString() + input
 }
-
-//create a variable for whats entered on the display
+let numBttn = document.querySelectorAll(".number")
+numBttn.forEach(function(currentBttn){
+    currentBttn.addEventListener("click", function(){
+        console.log(this.id)
+        write(this.id)
+        console.log(display)
+        let displayDiv = document.querySelector(".display")
+        displayDiv.removeChild(displayDiv.firstChild)
+        let newDisplay = document.createElement("p")
+        newDisplay.textContent = display
+        displayDiv.appendChild(newDisplay)
+    })
+})
 
 //store display variable in num1 or 2 when operator is pushed
 
