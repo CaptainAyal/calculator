@@ -31,6 +31,15 @@ const operate = function(a, b){
         : operator === "m" ? multiply (a, b)
         : operator === "d" ? divide (a, b)
         : "Error"
+    
+}
+
+//clean up function used after operate and also for clear button
+const cleanUp = function(){
+num1 = display
+operator = undefined
+num2 = undefined
+//add to unhighlight operator
 }
 
 //create function to populate display when number buttons are pressed
@@ -41,6 +50,10 @@ const write = (input) =>{
 let numBttn = document.querySelectorAll(".number")
 numBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
+        if(num1 !==undefined && operator ===undefined) {
+            num1 = undefined
+            display = 0
+        }
         write(this.id)
         displayText.textContent = display
     })
@@ -57,24 +70,49 @@ opBttn.forEach(function(currentBttn){
             displayText.textContent = display
             operator = this.id
         }
-        else if (num2 === undefined && display === 0){
+        else if (num2 === undefined && num1 !== undefined && operator === undefined){
+            operator = this.id
+            display = 0
+            displayText.textContent = display
+        }
+        else if (num2 === undefined && num1 !== undefined && display ===0){
             operator = this.id
         }
         else if(num2 === undefined){
             num2 = display
             display = operate(num1, num2)
             displayText.textContent = display
+            cleanUp()
             }
         
 })
 })
 
 //call the operate function when = is pressed, update the display with the answer
+let eqBttn = document.querySelector("#equal")
+eqBttn.addEventListener("click", () => {
+    if(num1 === undefined || operator === undefined){}
+    else{
+        num2 = display
+        display = operate(num1, num2)
+        displayText.textContent = display
+        cleanUp()
+    }
+})
+
+//Clear button - sets num1, num2, display to 0. unapply operator.
+let clBttn = document.querySelector("#clear")
+clBttn.addEventListener("click", () =>{
+    cleanUp()
+    num1 = undefined
+    display = 0
+    displayText.textContent = display
+})
 
 //After this is working do more:
 //Add if/else arguments to make the operate function call if operator is pushed after num2
 //Add if/else argument to allow for changing operater if num2 has not been entered
-//Store result of operator in Num1
+
 //Round result decimals to 10 places
 //What to do with early = press?
 //Clear button - sets num1, num2, display, result and maybe others to 0. unapply operator. More?
