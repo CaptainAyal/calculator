@@ -1,3 +1,9 @@
+// create display content
+let displayText = document.createElement("p")
+displayText.textContent = "0"
+let displayDiv = document.querySelector(".display")
+displayDiv.appendChild(displayText)
+
 // create function for addition
 const add = (a, b)=>{return a+b};
 
@@ -18,6 +24,8 @@ let display=0;
 
 //create function "operate" that calls the above functions using the variables
 const operate = function(a, b){
+    a = Number(a)
+    b = Number(b)
     return operator === "a" ? add (a, b)
         : operator === "s" ? subtract (a, b)
         : operator === "m" ? multiply (a, b)
@@ -33,20 +41,33 @@ const write = (input) =>{
 let numBttn = document.querySelectorAll(".number")
 numBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
-        console.log(this.id)
         write(this.id)
-        console.log(display)
-        let displayDiv = document.querySelector(".display")
-        displayDiv.removeChild(displayDiv.firstChild)
-        let newDisplay = document.createElement("p")
-        newDisplay.textContent = display
-        displayDiv.appendChild(newDisplay)
+        displayText.textContent = display
     })
 })
 
-//store display variable in num1 or 2 when operator is pushed
-
-//store the operator in variable when it is pushed
+//store display variable in num1 or 2 when operator is pushed and operator in operator variable
+let opBttn = document.querySelectorAll(".operator")
+opBttn.forEach(function(currentBttn){
+    currentBttn.addEventListener("click", function(){
+        
+        if (num1 === undefined) {
+            num1 = display
+            display = 0
+            displayText.textContent = display
+            operator = this.id
+        }
+        else if (num2 === undefined && display === 0){
+            operator = this.id
+        }
+        else if(num2 === undefined){
+            num2 = display
+            display = operate(num1, num2)
+            displayText.textContent = display
+            }
+        
+})
+})
 
 //call the operate function when = is pressed, update the display with the answer
 
