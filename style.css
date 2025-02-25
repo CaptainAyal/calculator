@@ -1,0 +1,35 @@
+.column{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: column;
+    }
+
+.display{
+    background-color: gray;
+    padding: 100px, 50px;
+    max-width: 400px;
+    height: 30px;
+    text-align: right;
+    line-height: 30px;
+}
+
+.bttns{
+    display:flex;
+}
+
+.number,
+#dot,
+.operator,
+#equal,
+#back,
+#clear,
+.extra{
+    width: 100px;
+    height: 50px;
+}
+
+.number {background-color: rgb(75, 75, 168);}
+#dot, #equal{background-color: green;}
+.operator {background-color: darkorange;}
+#back, #clear{background-color: deeppink;}
+
