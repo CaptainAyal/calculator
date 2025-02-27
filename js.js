@@ -35,6 +35,16 @@ const operate = function(a, b){
     
 }
 
+const snark = () =>{
+    displayText.textContent = "Error. Click link below for more info"
+    const snarky = document.createElement("a")
+    const snarkLink = document.createTextNode("Click me for error info!")
+    snarky.appendChild(snarkLink)
+    snarky.title = "Click me for error info!"
+    snarky.href = "https://googlethatforyou.com?q=Why%20can't%20I%20divide%20by%200"
+    document.body.appendChild(snarky)
+}
+
 //clean up function used after operate and also for clear button 
 // - might not be good, review when code is done if we can repurpose the function
 // const cleanUp = function(){
@@ -93,10 +103,13 @@ opBttn.forEach(function(currentBttn){
             num2 = display
             display = operate(num1, num2)
             displayText.textContent = display
+            if (display === Infinity){snark()}
+            else{
             num1 = display
             num2 = undefined
             operator = this.id
             continueFunction = true
+            }
             }
         
 })
@@ -110,9 +123,12 @@ eqBttn.addEventListener("click", () => {
         num2 = display
         display = operate(num1, num2)
         displayText.textContent = display
+        if (display === Infinity){snark()}
+        else{
         num1 = display
         num2 = undefined
         operator = undefined
+    }
     }
 })
 
@@ -128,12 +144,9 @@ clBttn.addEventListener("click", () =>{
 })
 
 //After this is working do more:
-//Add if/else arguments to make the operate function call if operator is pushed after num2
-//Add if/else argument to allow for changing operater if num2 has not been entered
 
-//Round result decimals to 10 places
-//What to do with early = press?
-//Clear button - sets num1, num2, display, result and maybe others to 0. unapply operator. More?
+
+//Round result decimals to 10 places **automatically runs to 16 places. Might be fine?
 //Add snark for divide by 0
 //After calculation, new number press clears calculator
 
