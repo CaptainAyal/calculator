@@ -21,6 +21,7 @@ let num1;
 let num2;
 let operator;
 let display=0;
+let continueFunction = false
 
 //create function "operate" that calls the above functions using the variables
 const operate = function(a, b){
@@ -34,13 +35,14 @@ const operate = function(a, b){
     
 }
 
-//clean up function used after operate and also for clear button
-const cleanUp = function(){
-num1 = display
-operator = undefined
-num2 = undefined
+//clean up function used after operate and also for clear button 
+// - might not be good, review when code is done if we can repurpose the function
+// const cleanUp = function(){
+// num1 = display
+// operator = undefined
+// num2 = undefined}
 //add to unhighlight operator
-}
+
 
 //create function to populate display when number buttons are pressed
 const write = (input) =>{
@@ -50,9 +52,15 @@ const write = (input) =>{
 let numBttn = document.querySelectorAll(".number")
 numBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
+        //clears data in num1 after an equals push
         if(num1 !==undefined && operator ===undefined) {
             num1 = undefined
             display = 0
+        }
+        //allows for correct operation when stringing calculations together
+        else if (continueFunction===true) {
+            display = 0
+            continueFunction=false
         }
         write(this.id)
         displayText.textContent = display
@@ -63,26 +71,32 @@ numBttn.forEach(function(currentBttn){
 let opBttn = document.querySelectorAll(".operator")
 opBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
-        
+        //Sets num1 and operator. This is a normal expected flow from user
         if (num1 === undefined) {
             num1 = display
             display = 0
             displayText.textContent = display
             operator = this.id
         }
+        //Sets the operator only when num1 is already selected. This is expected operation after an equals push
         else if (num2 === undefined && num1 !== undefined && operator === undefined){
             operator = this.id
             display = 0
             displayText.textContent = display
         }
+        //Sets the operator only. This allows user to switch operator before starting to enter num2
         else if (num2 === undefined && num1 !== undefined && display ===0){
             operator = this.id
         }
+        //Allows user to calculate total using operator key instead of equals. User may then enter num2 to continue calculations
         else if(num2 === undefined){
             num2 = display
             display = operate(num1, num2)
             displayText.textContent = display
-            cleanUp()
+            num1 = display
+            num2 = undefined
+            operator = this.id
+            continueFunction = true
             }
         
 })
@@ -96,17 +110,21 @@ eqBttn.addEventListener("click", () => {
         num2 = display
         display = operate(num1, num2)
         displayText.textContent = display
-        cleanUp()
+        num1 = display
+        num2 = undefined
+        operator = undefined
     }
 })
 
 //Clear button - sets num1, num2, display to 0. unapply operator.
 let clBttn = document.querySelector("#clear")
 clBttn.addEventListener("click", () =>{
-    cleanUp()
     num1 = undefined
+    num2 = undefined
+    operator = undefined
     display = 0
     displayText.textContent = display
+    continueFunction=false
 })
 
 //After this is working do more:
