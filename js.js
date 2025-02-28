@@ -51,8 +51,10 @@ const snark = () =>{
 
 //create function to populate display when number buttons are pressed. Decimal is a "number button"
 const write = (input) =>{
-    input === "." && display.includes(".") ? input = ""
-    :display === 0 && input === "." ? display = "0."
+    //fixes decimal bug -- what was the bug? first line doesn't work, bug seems fixed?
+    // if (display != displayText.textContent) {display = displayText.textContent}
+    display === 0 && input == "." ? display = "0."
+    :input === "." && display.includes(".") ? input = ""
     :display === 0 ? display = input
     :display = display.toString() + input
 }
@@ -76,8 +78,17 @@ numBttn.forEach(function(currentBttn){
     })
 })
 
+
+
 //store display variable in num1 or 2 when operator is pushed and operator in operator variable
 let opBttn = document.querySelectorAll(".operator")
+//Function to highlight the operator
+let opHighlight = (ID) => { document.getElementById(ID).className = "operatorToggle"}
+let opReset = () => {
+    if (document.querySelector(".operatorToggle")) { 
+        document.querySelector(".operatorToggle").className = "operator"
+}}
+
 opBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
         //Assuming all 3 variables are undefined - Sets num1 and operator. 
@@ -86,15 +97,20 @@ opBttn.forEach(function(currentBttn){
             display = 0
             displayText.textContent = display
             operator = this.id
+            opHighlight(this.id)
         }
         //Sets the operator only when num1 is already selected. This is expected operation after an equals push
         else if (num2 === undefined && num1 !== undefined && operator === undefined){
             operator = this.id
             display = 0
             displayText.textContent = display
+            opReset()
+            opHighlight(this.id)
         }
         //Sets the operator only. This allows user to switch operator before starting to enter num2
         else if (num2 === undefined && num1 !== undefined && display ===0){
+            opReset()
+            opHighlight(this.id)
             operator = this.id
         }
         //Allows user to calculate total using operator key instead of equals. User may then enter num2 to continue calculations
@@ -106,8 +122,11 @@ opBttn.forEach(function(currentBttn){
             else{
             num1 = display
             num2 = undefined
+            display = 0
             operator = this.id
             continueFunction = true
+            opReset()
+            opHighlight(this.id)
             }
             }
         
@@ -127,6 +146,7 @@ eqBttn.addEventListener("click", () => {
         num1 = display
         num2 = undefined
         operator = undefined
+        opReset()
     }
     }
 })
@@ -140,6 +160,17 @@ clBttn.addEventListener("click", () =>{
     display = 0
     displayText.textContent = display
     continueFunction=false
+    opReset()
+})
+
+//add backspace button
+let bkSpace = document.querySelector("#back")
+bkSpace.addEventListener("click", () =>{
+    if (typeof display === "string") {
+        display = display.slice(0, -1)
+        if (display == "") display = 0
+        displayText.textContent = display
+    }
 })
 
 //After this is working do more:
@@ -147,5 +178,5 @@ clBttn.addEventListener("click", () =>{
 
 //Round result decimals to 10 places **automatically runs to 16 places. Might be fine?
 
-//add backspace button
+
 //add keyboard support

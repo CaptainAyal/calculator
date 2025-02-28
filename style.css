@@ -20,6 +20,7 @@
 .number,
 #dot,
 .operator,
+.operatorToggle,
 #equal,
 #back,
 #clear,
@@ -31,5 +32,6 @@
 .number {background-color: rgb(75, 75, 168);}
 #dot, #equal{background-color: green;}
 .operator {background-color: darkorange;}
+.operatorToggle {background-color: yellow}
 #back, #clear{background-color: deeppink;}
 
