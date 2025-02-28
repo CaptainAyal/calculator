@@ -4,16 +4,10 @@ displayText.textContent = "0"
 let displayDiv = document.querySelector(".display")
 displayDiv.appendChild(displayText)
 
-// create function for addition
+// create functions for addition/subtraction/multiplication/division
 const add = (a, b)=>{return a+b};
-
-// create function for subtraction
 const subtract = (a, b)=>{return a-b};
-
-// create function for multiplication
 const multiply = (a, b)=>{return a*b};
-
-// create function for division
 const divide = (a, b)=>{return a/b};
 
 //create variables
@@ -35,6 +29,7 @@ const operate = function(a, b){
     
 }
 
+//create response for divide by 0
 const snark = () =>{
     displayText.textContent = "Error. Click link below for more info"
     const snarky = document.createElement("a")
@@ -54,11 +49,14 @@ const snark = () =>{
 //add to unhighlight operator
 
 
-//create function to populate display when number buttons are pressed
+//create function to populate display when number buttons are pressed. Decimal is a "number button"
 const write = (input) =>{
-    display === 0 ? display = input
+    input === "." && display.includes(".") ? input = ""
+    :display === 0 && input === "." ? display = "0."
+    :display === 0 ? display = input
     :display = display.toString() + input
 }
+
 let numBttn = document.querySelectorAll(".number")
 numBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
@@ -72,6 +70,7 @@ numBttn.forEach(function(currentBttn){
             display = 0
             continueFunction=false
         }
+  
         write(this.id)
         displayText.textContent = display
     })
@@ -81,7 +80,7 @@ numBttn.forEach(function(currentBttn){
 let opBttn = document.querySelectorAll(".operator")
 opBttn.forEach(function(currentBttn){
     currentBttn.addEventListener("click", function(){
-        //Sets num1 and operator. This is a normal expected flow from user
+        //Assuming all 3 variables are undefined - Sets num1 and operator. 
         if (num1 === undefined) {
             num1 = display
             display = 0
@@ -147,10 +146,6 @@ clBttn.addEventListener("click", () =>{
 
 
 //Round result decimals to 10 places **automatically runs to 16 places. Might be fine?
-//Add snark for divide by 0
-//After calculation, new number press clears calculator
 
-
-//xtra - add decimal ability. Don't let them add more than 1
 //add backspace button
 //add keyboard support
