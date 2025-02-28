@@ -21,10 +21,10 @@ let continueFunction = false
 const operate = function(a, b){
     a = Number(a)
     b = Number(b)
-    return operator === "a" ? add (a, b)
-        : operator === "s" ? subtract (a, b)
-        : operator === "m" ? multiply (a, b)
-        : operator === "d" ? divide (a, b)
+    return operator === "+" ? add (a, b)
+        : operator === "-" ? subtract (a, b)
+        : operator === "*" ? multiply (a, b)
+        : operator === "/" ? divide (a, b)
         : "Error"
     
 }
@@ -77,7 +77,6 @@ numBttn.forEach(function(currentBttn){
         displayText.textContent = display
     })
 })
-
 
 
 //store display variable in num1 or 2 when operator is pushed and operator in operator variable
@@ -173,10 +172,95 @@ bkSpace.addEventListener("click", () =>{
     }
 })
 
-//After this is working do more:
-
-
-//Round result decimals to 10 places **automatically runs to 16 places. Might be fine?
-
-
+let numKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+let opKeys = ["+", "-", "*", "/"]
+let clrKey = ["Escape"]
+let eqKey = ["Enter"]
+let bkKey = ["Backspace", "Delete"]
 //add keyboard support
+document.addEventListener ("keydown", (event)=> {
+    let keyName = event.key
+    console.log(keyName)
+    if(numKeys.includes(keyName)){
+        //clears data in num1 after an equals push
+        if(num1 !==undefined && operator ===undefined) {
+            num1 = undefined
+            display = 0
+        }
+        //allows for correct operation when stringing calculations together
+        else if (continueFunction===true) {
+            display = 0
+            continueFunction=false
+        }
+
+        write(keyName)
+        displayText.textContent = display
+    } else if(opKeys.includes(keyName)){
+        //Assuming all 3 variables are undefined - Sets num1 and operator. 
+        if (num1 === undefined) {
+            num1 = display
+            display = 0
+            displayText.textContent = display
+            operator = keyName
+            opHighlight(keyName)
+        }
+        //Sets the operator only when num1 is already selected. This is expected operation after an equals push
+        else if (num2 === undefined && num1 !== undefined && operator === undefined){
+            operator = keyName
+            display = 0
+            displayText.textContent = display
+            opReset()
+            opHighlight(keyName)
+        }
+        //Sets the operator only. This allows user to switch operator before starting to enter num2
+        else if (num2 === undefined && num1 !== undefined && display ===0){
+            opReset()
+            opHighlight(keyName)
+            operator = keyName
+        }
+        //Allows user to calculate total using operator key instead of equals. User may then enter num2 to continue calculations
+        else if(num2 === undefined){
+            num2 = display
+            display = operate(num1, num2)
+            displayText.textContent = display
+            if (display === Infinity){snark()}
+            else{
+            num1 = display
+            num2 = undefined
+            display = 0
+            operator = keyName
+            continueFunction = true
+            opReset()
+            opHighlight(keyName)
+            }
+        }
+    } else if(clrKey.includes(keyName)){
+            num1 = undefined
+            num2 = undefined
+            operator = undefined
+            display = 0
+            displayText.textContent = display
+            continueFunction=false
+            opReset()
+    } else if(eqKey.includes(keyName)){
+        if(num1 === undefined || operator === undefined){}
+        else{
+        num2 = display
+        display = operate(num1, num2)
+        displayText.textContent = display
+            if (display === Infinity){snark()}
+            else{
+            num1 = display
+            num2 = undefined
+            operator = undefined
+            opReset()
+    }}} else if(bkKey.includes(keyName)){
+        if (typeof display === "string") {
+            display = display.slice(0, -1)
+            if (display == "") display = 0
+            displayText.textContent = display
+        }
+    }
+    })
+
+// Need to clean up and make pretty
