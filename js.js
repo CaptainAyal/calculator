@@ -57,6 +57,8 @@ const write = (input) =>{
     :input === "." && display.includes(".") ? input = ""
     :display === 0 ? display = input
     :display = display.toString() + input
+
+    displayText.textContent = display
 }
 
 let numBttn = document.querySelectorAll(".number")
@@ -74,18 +76,37 @@ numBttn.forEach(function(currentBttn){
         }
   
         write(this.id)
-        displayText.textContent = display
+        
     })
 })
 
 
 //store display variable in num1 or 2 when operator is pushed and operator in operator variable
 let opBttn = document.querySelectorAll(".operator")
+
 //Function to highlight the operator
 let opHighlight = (ID) => { document.getElementById(ID).className = "operatorToggle"}
 let opReset = () => {
     if (document.querySelector(".operatorToggle")) { 
         document.querySelector(".operatorToggle").className = "operator"
+}}
+
+//These get called a lot together, make them one function
+let cleanUpOp = (ID) => {
+    operator = ID
+    opReset()
+    opHighlight(ID)
+    }
+
+//Another group called together
+let eqFunc = () => {
+    num2 = display
+    display = operate(num1, num2)
+    displayText.textContent = display
+    if (display === Infinity){snark()}
+    else{
+    num1 = display
+    num2 = undefined
 }}
 
 opBttn.forEach(function(currentBttn){
@@ -100,55 +121,36 @@ opBttn.forEach(function(currentBttn){
         }
         //Sets the operator only when num1 is already selected. This is expected operation after an equals push
         else if (num2 === undefined && num1 !== undefined && operator === undefined){
-            operator = this.id
             display = 0
             displayText.textContent = display
-            opReset()
-            opHighlight(this.id)
+            cleanUpOp(this.id)
         }
         //Sets the operator only. This allows user to switch operator before starting to enter num2
         else if (num2 === undefined && num1 !== undefined && display ===0){
-            opReset()
-            opHighlight(this.id)
-            operator = this.id
+            cleanUpOp(this.id)
         }
         //Allows user to calculate total using operator key instead of equals. User may then enter num2 to continue calculations
         else if(num2 === undefined){
-            num2 = display
-            display = operate(num1, num2)
-            displayText.textContent = display
-            if (display === Infinity){snark()}
-            else{
-            num1 = display
-            num2 = undefined
+            eqFunc()
             display = 0
-            operator = this.id
             continueFunction = true
-            opReset()
-            opHighlight(this.id)
+            cleanUpOp(this.id)
             }
-            }
-        
+            })
 })
-})
+
 
 //call the operate function when = is pressed, update the display with the answer
 let eqBttn = document.querySelector("#equal")
 eqBttn.addEventListener("click", () => {
     if(num1 === undefined || operator === undefined){}
     else{
-        num2 = display
-        display = operate(num1, num2)
-        displayText.textContent = display
-        if (display === Infinity){snark()}
-        else{
-        num1 = display
-        num2 = undefined
+        eqFunc()
         operator = undefined
         opReset()
     }
     }
-})
+)
 
 //Clear button - sets num1, num2, display to 0. unapply operator.
 let clBttn = document.querySelector("#clear")
@@ -194,7 +196,7 @@ document.addEventListener ("keydown", (event)=> {
         }
 
         write(keyName)
-        displayText.textContent = display
+        
     } else if(opKeys.includes(keyName)){
         //Assuming all 3 variables are undefined - Sets num1 and operator. 
         if (num1 === undefined) {
