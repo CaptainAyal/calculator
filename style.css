@@ -1,21 +1,33 @@
+.main{
+    display:flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .column{
     display:flex;
-    justify-content: space-between;
     flex-direction: column;
+    flex: 1, 1, 100px;
     }
 
 .display{
     background-color: gray;
-    padding: 100px, 50px;
-    max-width: 400px;
+    width: 280px;
     height: 30px;
-    text-align: center;
-    line-height: 30px;
+    text-align: right;
+    padding: 9px;
+    font-size: x-large;
+    }
+
+p{
+    margin:0;
 }
 
 .bttns{
     display:flex;
-}
+    }
 
 .number,
 #dot,
@@ -26,13 +38,14 @@
 #clear,
 #neg,
 #sq{
-    width: 100px;
+    width: 75px;
     height: 50px;
 }
 
-.number {background-color: rgb(75, 75, 168);}
+.number, #neg {background-color: lightgray;}
 #dot, #equal{background-color: green;}
-.operator {background-color: darkorange;}
+.operator, #sq {background-color: darkorange;}
 .operatorToggle {background-color: yellow}
-#back, #clear{background-color: deeppink;}
+#back, #clear{background-color: darkgray;}
+body{background-color: #272424;}
 

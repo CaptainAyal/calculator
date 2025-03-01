@@ -42,7 +42,8 @@ const snark = () =>{
 
 //create function to populate display when number buttons are pressed. Decimal is a "number button"
 const write = (input) =>{
-    display === 0 && input == "." ? display = "0."
+    display.length >= 20 ? {}
+    :display === 0 && input == "." ? display = "0."
     :input === "." && display.includes(".") ? input = ""
     :display === 0 ? display = input
     :display = display.toString() + input
@@ -207,60 +208,12 @@ let bkKey = ["Backspace", "Delete"]
 //add keyboard support
 document.addEventListener ("keydown", (event)=> {
     let keyName = event.key
-    console.log(keyName)
     if(numKeys.includes(keyName)){
-        //clears data in num1 after an equals push
-        if(num1 !==undefined && operator ===undefined) {
-            num1 = undefined
-            display = 0
-        }
-        //allows for correct operation when stringing calculations together
-        else if (continueFunction===true) {
-            display = 0
-            continueFunction=false
-        }
-
-        write(keyName)
-        
+        numBttn.forEach(function(currentBttn){
+            if(currentBttn.id === keyName) {currentBttn.click()}})
     } else if(opKeys.includes(keyName)){
-        //Assuming all 3 variables are undefined - Sets num1 and operator. 
-        if (num1 === undefined) {
-            num1 = display
-            display = 0
-            displayText.textContent = display
-            operator = keyName
-            opHighlight(keyName)
-        }
-        //Sets the operator only when num1 is already selected. This is expected operation after an equals push
-        else if (num2 === undefined && num1 !== undefined && operator === undefined){
-            operator = keyName
-            display = 0
-            displayText.textContent = display
-            opReset()
-            opHighlight(keyName)
-        }
-        //Sets the operator only. This allows user to switch operator before starting to enter num2
-        else if (num2 === undefined && num1 !== undefined && display ===0){
-            opReset()
-            opHighlight(keyName)
-            operator = keyName
-        }
-        //Allows user to calculate total using operator key instead of equals. User may then enter num2 to continue calculations
-        else if(num2 === undefined){
-            num2 = display
-            display = operate(num1, num2)
-            displayText.textContent = display
-            if (display === Infinity){snark()}
-            else{
-            num1 = display
-            num2 = undefined
-            display = 0
-            operator = keyName
-            continueFunction = true
-            opReset()
-            opHighlight(keyName)
-            }
-        }
+        opBttn.forEach(function(currentBttn){
+            if(currentBttn.id === keyName) {currentBttn.click()}})
     } else if(clrKey.includes(keyName)){clBttn.click()
     } else if(eqKey.includes(keyName)){eqBttn.click()
     } else if(bkKey.includes(keyName)){bkSpace.click()}
