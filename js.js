@@ -87,6 +87,25 @@ negBttn.addEventListener("click", () => {
 }
 })
 
+//Make x^2 button work
+let sqBttn = document.querySelector("#sq")
+sqBttn.addEventListener("click", () => {
+    if (continueFunction === true) {
+        num1 = num1**2
+        displayText.textContent = num1
+        
+        }   
+    else if(operator !== undefined){
+        display = display**2
+        displayText.textContent = display
+        
+        }
+    else{
+        display = display**2
+        displayText.textContent = num1 = display
+        }
+    })
+
 //store display variable in num1 or 2 when operator is pushed and operator in operator variable
 let opBttn = document.querySelectorAll(".operator")
 
