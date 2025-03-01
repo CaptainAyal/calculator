@@ -261,33 +261,9 @@ document.addEventListener ("keydown", (event)=> {
             opHighlight(keyName)
             }
         }
-    } else if(clrKey.includes(keyName)){
-            num1 = undefined
-            num2 = undefined
-            operator = undefined
-            display = 0
-            displayText.textContent = display
-            continueFunction=false
-            opReset()
-    } else if(eqKey.includes(keyName)){
-        if(num1 === undefined || operator === undefined){}
-        else{
-        num2 = display
-        display = operate(num1, num2)
-        displayText.textContent = display
-            if (display === Infinity){snark()}
-            else{
-            num1 = display
-            num2 = undefined
-            operator = undefined
-            opReset()
-    }}} else if(bkKey.includes(keyName)){
-        if (typeof display === "string") {
-            display = display.slice(0, -1)
-            if (display == "") display = 0
-            displayText.textContent = display
-        }
-    }
+    } else if(clrKey.includes(keyName)){clBttn.click()
+    } else if(eqKey.includes(keyName)){eqBttn.click()
+    } else if(bkKey.includes(keyName)){bkSpace.click()}
     })
 
-// Need to clean up and make pretty
+
