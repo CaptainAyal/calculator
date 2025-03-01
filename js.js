@@ -40,19 +40,8 @@ const snark = () =>{
     document.body.appendChild(snarky)
 }
 
-//clean up function used after operate and also for clear button 
-// - might not be good, review when code is done if we can repurpose the function
-// const cleanUp = function(){
-// num1 = display
-// operator = undefined
-// num2 = undefined}
-//add to unhighlight operator
-
-
 //create function to populate display when number buttons are pressed. Decimal is a "number button"
 const write = (input) =>{
-    //fixes decimal bug -- what was the bug? first line doesn't work, bug seems fixed?
-    // if (display != displayText.textContent) {display = displayText.textContent}
     display === 0 && input == "." ? display = "0."
     :input === "." && display.includes(".") ? input = ""
     :display === 0 ? display = input
@@ -80,11 +69,28 @@ numBttn.forEach(function(currentBttn){
     })
 })
 
+//Make +/- key work
+let negBttn = document.querySelector("#neg")
+negBttn.addEventListener("click", () => {
+    //exit loop for "0"
+    if(display === 0 && continueFunction === false) {}
+    //uses correct var for after calculations
+    else if ((display === 0 && continueFunction === true) || (num1 == display)){ 
+        num1.toString()[0] === "-" ? num1 = num1.toString().slice(1)
+        :num1 = "-" + num1
+        displayText.textContent = display = num1
+    }
+    else{
+        display.toString()[0] === "-" ? display = display.toString().slice(1)
+        :display = "-" + display
+        displayText.textContent = display
+}
+})
 
 //store display variable in num1 or 2 when operator is pushed and operator in operator variable
 let opBttn = document.querySelectorAll(".operator")
 
-//Function to highlight the operator
+//Function to highlight/unhighlight the operator
 let opHighlight = (ID) => { document.getElementById(ID).className = "operatorToggle"}
 let opReset = () => {
     if (document.querySelector(".operatorToggle")) { 
